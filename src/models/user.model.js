@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { boolean } from "webidl-conversions";
 
 const profileSchema = new mongoose.Schema({
     bio: {
@@ -27,7 +28,12 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    profile: profileSchema
+    profile: profileSchema,
+    
+    deleted_at: {
+        type: Date,
+        default: null
+    }
 })
 
 export default mongoose.model("User", userSchema)
