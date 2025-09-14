@@ -1,0 +1,26 @@
+{
+  "name": "mongoose-silvera-matias",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "dev": "node --watch ./app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/silveraMatu/mongoose-silvera-matias.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/silveraMatu/mongoose-silvera-matias/issues"
+  },
+  "homepage": "https://github.com/silveraMatu/mongoose-silvera-matias#readme",
+  "dependencies": {
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "mongoose": "^8.18.1"
+  }
+}
