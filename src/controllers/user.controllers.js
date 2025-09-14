@@ -1,7 +1,5 @@
 import { matchedData } from "express-validator";
 import UserModel from "../models/user.model.js";
-import { use } from "react";
-import { profile } from "console";
 
 export const createUser = async(req, res)=>{
     const validatedData = matchedData(req)
@@ -19,6 +17,10 @@ export const createUser = async(req, res)=>{
 
         res.status(201).json({ok: true, msg: "Usuario creado exitosamente", data: secureUser})
     } catch (error) {
+        
+        if(error.code = 11000)
+            return res.status(400).json({ok: false, msg: `ese ${Object.keys(error.keyValue)} ya se encuentra en uso.`})
+        
         res.status(500).json({ok: false, data: null, msg: "Error interno del servidor."})
     }
 }
@@ -34,7 +36,9 @@ export const getAllUsers = async(req, res)=>{
 
         for(const user of users){
 
-          const safeUser = {...user}
+          const {...safeUser} = user._doc
+
+          console.log(safeUser);
 
            safeUser.password = "*".repeat(safeUser.password.length)
 
@@ -43,6 +47,7 @@ export const getAllUsers = async(req, res)=>{
 
         res.status(200).json({ok: true, data: secureUsers})
     } catch (error) {
+        console.log(error);
         res.status(500).json({ok: false, msg: "Error interno del servidor", data: null})
     }
 }
@@ -79,15 +84,29 @@ export const updateUser = async(req, res)=>{
     try {
         const user = await UserModel.findOne({deleted_at: null, _id})
 
+        if(!user)
+            return res.status(404).json({ok: false, msg: "el usuario no existe", data: null})
+
         Object.keys(validatedData).forEach(key=>{
             user[key] = validatedData[key]
         })
         
         await user.save()
 
-        res.status(200).json({ok: true, data: user})
+        const secureUser = {
+            _id: user._id,
+            username: user.username,
+            email: user.email,
+            profile: user.profile
+        }
+
+        res.status(200).json({ok: true, data: secureUser})
 
     } catch (error) {
+
+        if(error.code = 11000)
+            return res.status(400).json({ok: false, msg: `ese ${Object.keys(error.keyValue)} ya se encuentra en uso.`})
+
         res.status(500).json({ok: false, msg: "Error interno del servidor", data: null })
     }
 }

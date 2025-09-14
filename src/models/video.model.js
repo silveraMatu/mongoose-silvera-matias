@@ -13,6 +13,8 @@ const videoSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Channel"
     }
+},{
+    versionKey: false
 })
 
 export default mongoose.model("Video", videoSchema)

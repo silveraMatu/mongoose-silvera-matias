@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import userModel from "./user.model.js";
 
 const channelSchema = new mongoose.Schema({
     name: {
@@ -13,6 +14,23 @@ const channelSchema = new mongoose.Schema({
         ref: "User",
         unique: true
     }
+},{
+    versionKey: false
 })
+
+//validacion para que los usuarios existan
+
+channelSchema.methods.userExist = async(_id)=>{
+    const exist = await userModel.findOne({deleted_at: null, _id: _id})
+
+    if(!exist)
+        throw{
+            statusCode: 404,
+            ok: false,
+            msg: "El usuario no existe."
+        }
+    
+    return
+}
 
 export default mongoose.model("Channel", channelSchema)

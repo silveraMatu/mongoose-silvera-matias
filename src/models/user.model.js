@@ -29,11 +29,13 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     profile: profileSchema,
-    
+
     deleted_at: {
         type: Date,
         default: null
     }
+},{
+    versionKey: false
 })
 
 export default mongoose.model("User", userSchema)
