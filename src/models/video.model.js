@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import ChannelModel from "./channel.model.js";
+import CommentModel from "./comment.model.js";
 
 const videoSchema = new mongoose.Schema({
     title: {
@@ -16,5 +18,26 @@ const videoSchema = new mongoose.Schema({
 },{
     versionKey: false
 })
+
+
+//hooks para eliminacion en cascada
+
+videoSchema.pre(/^(deleteOne | deleteMany)/, async function(next){
+    await CommentModel.deleteMany({video: this._id})
+
+    next()
+})
+
+
+videoSchema.methods.channelExist = async(_id)=>{
+    const exist = await ChannelModel.findById(_id)
+
+    if(!exist)
+        throw{
+            ok: false,
+            msg: "el canal no existe"
+        }
+    return
+}
 
 export default mongoose.model("Video", videoSchema)

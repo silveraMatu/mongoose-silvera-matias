@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { boolean } from "webidl-conversions";
 
 const profileSchema = new mongoose.Schema({
     bio: {

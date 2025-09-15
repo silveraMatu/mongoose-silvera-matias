@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import userModel from "./user.model.js";
+import VideoModel from "./video.model.js";
 
 const channelSchema = new mongoose.Schema({
     name: {
@@ -17,6 +18,17 @@ const channelSchema = new mongoose.Schema({
 },{
     versionKey: false
 })
+
+
+//hook para eliminación en cascada
+
+channelSchema.pre(/^(deleteOne)/, async function(next){
+    
+    await VideoModel.deleteMany({channel: this._id})
+
+    next()
+})
+
 
 //validacion para que los usuarios existan
 

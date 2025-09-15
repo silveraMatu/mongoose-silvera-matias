@@ -107,7 +107,7 @@ export const deleteChannel = async(req, res)=>{
     const {_id} = matchedData(req)
     
     try {
-        const deleted = (await channelModel.deleteOne({_id: _id}))
+        const deleted = await channelModel.deleteOne({_id: _id})
 
         if(!deleted.deletedCount)
             return res.status(404).json({ok: false, msg: "El canal no ha sido encontrado"})
