@@ -22,12 +22,16 @@ const channelSchema = new mongoose.Schema({
 
 //hook para eliminación en cascada
 
-channelSchema.pre(/^(deleteOne)/, async function(next){
-    
-    await VideoModel.deleteMany({channel: this._id})
+channelSchema.pre("deleteOne", { query: true }, async function (next) {
+  const videos = await VideoModel.find({ channel: this._id });
 
-    next()
-})
+  for (const video of videos) {
+    await video.deleteOne();
+  }
+
+  next();
+});
+
 
 
 //validacion para que los usuarios existan

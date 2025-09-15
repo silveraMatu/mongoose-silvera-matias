@@ -72,11 +72,13 @@ export const deleteVideo = async(req, res)=>{
     const {_id} = matchedData(req)
     
     try {
-        const deletedVideo = await VideoModel.deleteOne({_id: _id})
+        const video = await VideoModel.findOne({_id: _id})
 
-        if(!deletedVideo.deletedCount)
+        if(!video)
             return res.status(404).json({ok: false, msg: "video no encontrado.", data: null})
     
+        await video.deleteOne()
+
         res.status(204).end()
     
     } catch (error) {

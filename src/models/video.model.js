@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import ChannelModel from "./channel.model.js";
 import CommentModel from "./comment.model.js";
+import LikeModel from "./like.model.js";
 
 const videoSchema = new mongoose.Schema({
     title: {
@@ -22,11 +23,12 @@ const videoSchema = new mongoose.Schema({
 
 //hooks para eliminacion en cascada
 
-videoSchema.pre(/^(deleteOne | deleteMany)/, async function(next){
-    await CommentModel.deleteMany({video: this._id})
+videoSchema.pre("deleteOne", { document: true }, async function (next) {
+  await CommentModel.deleteMany({ video: this._id });
+  await LikeModel.deleteMany({ video: this._id });
+  next();
+});
 
-    next()
-})
 
 
 videoSchema.methods.channelExist = async(_id)=>{
@@ -34,6 +36,7 @@ videoSchema.methods.channelExist = async(_id)=>{
 
     if(!exist)
         throw{
+            statusCode: 404,
             ok: false,
             msg: "el canal no existe"
         }

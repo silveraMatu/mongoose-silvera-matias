@@ -1,4 +1,7 @@
 import mongoose from "mongoose";
+import ChannelModel from "./channel.model.js";
+import CommentModel from "./comment.model.js";
+import LikeModel from "./like.model.js";
 
 const profileSchema = new mongoose.Schema({
     bio: {
@@ -35,6 +38,21 @@ const userSchema = new mongoose.Schema({
     }
 },{
     versionKey: false
+})
+
+
+userSchema.pre(/^(findOneAndUpdate)/, async function(next){
+
+    const updated = this.getUpdate()
+
+    if(updated && updated.deleted_at !== null){
+        const userId = this.getQuery()._id
+        await ChannelModel.deleteOne({user: userId})
+        await CommentModel.deleteMany({user: userId})
+        await LikeModel.deleteMany({user: userId})
+    }
+    
+    next()
 })
 
 export default mongoose.model("User", userSchema)

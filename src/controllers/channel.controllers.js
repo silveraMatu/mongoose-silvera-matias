@@ -1,6 +1,5 @@
 import { matchedData } from "express-validator";
 import ChannelModel from "../models/channel.model.js";
-import channelModel from "../models/channel.model.js";
 
 export const createChannel = async(req, res)=>{
     
@@ -107,7 +106,7 @@ export const deleteChannel = async(req, res)=>{
     const {_id} = matchedData(req)
     
     try {
-        const deleted = await channelModel.deleteOne({_id: _id})
+        const deleted = await ChannelModel.deleteOne({_id: _id})
 
         if(!deleted.deletedCount)
             return res.status(404).json({ok: false, msg: "El canal no ha sido encontrado"})
