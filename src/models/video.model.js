@@ -17,7 +17,16 @@ const videoSchema = new mongoose.Schema({
         ref: "Channel"
     }
 },{
-    versionKey: false
+    versionKey: false,
+    toJSON:{virtuals: true}, //sirve para poder incluir los virtual en el res.json()
+})
+
+/*virtual de comentarios para satisfacer el punto de 
+realizar populate desde colecciones sin referencias directas*/
+videoSchema.virtual("comment", {
+    ref: "Comment",
+    localField: "_id",
+    foreignField: "video"
 })
 
 

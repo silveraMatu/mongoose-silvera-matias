@@ -85,3 +85,20 @@ export const deleteVideo = async(req, res)=>{
         res.status(500).json({ok: false, msg: "Error interno del servidor", data: null})
     }
 }
+
+export const getCommentsVideo = async(req, res)=>{
+    
+    const {video} = req.query
+    
+    try {
+        const comments = await VideoModel.findOne({_id: video}, {comment: true}).populate("comment")
+
+        if(!comments)
+            return res.status(404).json({ok: false, msg: "No existe este video", data: null})
+
+        res.status(200).json({ok: true, data: comments})
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ok: false, msg: "Error interno del servidor", data: null})
+    }
+}
