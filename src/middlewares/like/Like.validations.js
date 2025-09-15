@@ -1,8 +1,8 @@
-import { query } from "express-validator";
+import { body } from "express-validator";
 
 export const LikeValidations = [
-    query("video")
+    body("video")
         .isMongoId().withMessage("video debe un id valido de mongo."),
-    query("user")
+    body("user")
         .isMongoId().withMessage("user debe un id valido de mongo.")
 ]

@@ -3,7 +3,7 @@ import LikeModel from "../models/like.model.js";
 
 export const darLike = async(req, res)=>{
     
-    const {user, video} = req.query
+    const {user, video} = matchedData(req)
     
     try {
         const like = new LikeModel({user: user, video: video})
@@ -25,7 +25,7 @@ export const darLike = async(req, res)=>{
 
 export const deslikearVideo = async(req, res)=>{
     
-    const {user, video} = req.query
+    const {user, video} = matchedData(req)
     
     try {
         const deleted = await LikeModel.findOneAndDelete({user: user, video: video})

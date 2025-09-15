@@ -5,9 +5,6 @@ import { darLike, deslikearVideo, getAllLikes } from "../controllers/like.contro
 
 export const likeRouter = Router()
 
-//Los endpoint para postear y eliminar el like requieren query strings 
-//ejemplo de uso /api/like?video=<objectId>&user=<objectId> 
-
-likeRouter.post("/like/", LikeValidations, applyValidations, darLike)
-likeRouter.delete("/like/", LikeValidations, applyValidations, deslikearVideo)
-likeRouter.get("/like/", getAllLikes)
+likeRouter.post("/like", LikeValidations, applyValidations, darLike)
+likeRouter.delete("/like", LikeValidations, applyValidations, deslikearVideo)
+likeRouter.get("/like", getAllLikes)
